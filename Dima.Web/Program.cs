@@ -11,7 +11,8 @@ builder.Services.AddMudServices();
 
 builder.Services.AddHttpClient(Configuration.HttpClientName, opt =>
 {
-    opt.BaseAddress = new Uri("http://localhost:5030");
-}).AddHttpMessageHandler<CookieHandler>();
+    opt.BaseAddress = new Uri(Configuration.BackendUrl);
+});
+   // .AddHttpMessageHandler<CookieHandler>();
 
 await builder.Build().RunAsync();
