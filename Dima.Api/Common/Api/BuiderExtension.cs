@@ -12,8 +12,8 @@ public static class BuiderExtension
 {
     public static void AddConfiguration(this WebApplicationBuilder builder)
     {
-        Configuration.BackendUrl = builder.Configuration.GetConnectionString("BackendUrl") ?? string.Empty;
-        Configuration.FrontendUrl = builder.Configuration.GetConnectionString("FrontendUrl") ?? string.Empty;
+        Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
+        Configuration.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
         Configuration.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
     }
     public static void AddSecurity(this WebApplicationBuilder builder)

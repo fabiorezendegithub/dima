@@ -44,6 +44,7 @@ public partial class RegisterPage : ComponentBase
 
             if(result.IsSuccess)
             {
+                Snackbar.Add(result.Message, Severity.Success);
                 NavigationManager.NavigateTo("/login");
             }
             else
