@@ -18,7 +18,7 @@ namespace Dima.Web.Handlers
                 : new Response<string>(null, 400, "Usuário ou senha inválida");
         }
 
-        public async Task<Response<string>> RegisterASync(RegisterRequest request)
+        public async Task<Response<string>> RegisterAsync(RegisterRequest request)
         {
             var result = await _client.PostAsJsonAsync("v1/identity/register", request);
 
