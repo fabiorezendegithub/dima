@@ -1,0 +1,9 @@
+﻿@inject NavigationManager NavigationManager
+<h3>Redirecionando para tela de login...</h3>
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}
