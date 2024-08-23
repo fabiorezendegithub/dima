@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dima.Api.Handlers;
 
-public class TransactionHandler(AppDbContext context) : ITransactionHandler
+public class TransactionHandler(AppDbContext context) : ICategoryHandler
 {
     public async Task<Response<Transaction?>> CreateAsync(CreateTransactionRequest request)
     {

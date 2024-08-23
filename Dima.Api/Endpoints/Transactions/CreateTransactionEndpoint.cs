@@ -18,7 +18,7 @@ public class CreateTransactionEndpoint : IEndpoint
                   .WithOrder(1)
                   .Produces<Response<Transaction?>>();
 
-    private static async Task<IResult> HandleAsync(ClaimsPrincipal user, ITransactionHandler handler, CreateTransactionRequest request)
+    private static async Task<IResult> HandleAsync(ClaimsPrincipal user, ICategoryHandler handler, CreateTransactionRequest request)
     {
         request.UserId = user.Identity?.Name ?? string.Empty;
         var result = await handler.CreateAsync(request);

@@ -18,7 +18,7 @@ public class DeleteTransactionEndpoint : IEndpoint
                   .WithOrder(3)
                   .Produces<Response<Transaction?>>();
 
-    private static async Task<IResult> HandleAsync(ClaimsPrincipal user, ITransactionHandler handler, long id)
+    private static async Task<IResult> HandleAsync(ClaimsPrincipal user, ICategoryHandler handler, long id)
     {
         var request = new DeleteTransactionRequest
         {

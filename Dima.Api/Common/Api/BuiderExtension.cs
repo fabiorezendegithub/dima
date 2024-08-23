@@ -59,6 +59,6 @@ public static class BuiderExtension
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
-        builder.Services.AddTransient<ITransactionHandler, TransactionHandler>();
+        builder.Services.AddTransient<ICategoryHandler, TransactionHandler>();
     }
 }

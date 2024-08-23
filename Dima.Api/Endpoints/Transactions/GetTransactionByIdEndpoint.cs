@@ -18,7 +18,7 @@ public class GetTransactionByIdEndpoint : IEndpoint
                   .WithOrder(4)
                   .Produces<Response<Transaction?>>();
 
-    private static async Task<IResult> HandleAsync(ClaimsPrincipal user, ITransactionHandler handler, long id)
+    private static async Task<IResult> HandleAsync(ClaimsPrincipal user, ICategoryHandler handler, long id)
     {
         var request = new GetTransactionByIdRequest
         {

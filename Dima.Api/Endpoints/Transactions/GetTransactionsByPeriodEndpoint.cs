@@ -22,7 +22,7 @@ public class GetTransactionsByPeriodEndpoint : IEndpoint
                   .Produces<PagedResponse<List<Transaction>?>>();
 
     private static async Task<IResult> HandleAsync(ClaimsPrincipal user, 
-        ITransactionHandler handler,
+        ICategoryHandler handler,
         [FromQuery] DateTime? startDate = null,
         [FromQuery] DateTime? endDate = null,
         [FromQuery] int pageNumber = Configuration.DefaultPageNumber,
