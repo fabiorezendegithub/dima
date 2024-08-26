@@ -1,4 +1,5 @@
-﻿using Dima.Core.Handlers;
+﻿using Dima.Core.Common.Extensions;
+using Dima.Core.Handlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Transactions;
 using Dima.Core.Responses;
@@ -35,9 +36,22 @@ public class TransactionHandler(IHttpClientFactory httpClientFactory) : ITransac
         => await _client.GetFromJsonAsync<Response<Transaction?>>($"v1/transactions/{request.Id}")
             ?? new Response<Transaction?>(null, 400, "Não foi possível obter a transação");
 
-    public async Task<PagedResponse<List<Transaction>>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
+    public async Task<PagedResponse<List<Transaction>?>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
     {
-        throw new NotImplementedException();
+        const string format = "yyyy-MM-dd";
+        var startDate = request.StartDate is not null
+            ? request.StartDate.Value.ToString(format) 
+            : DateTime.Now.GetFirstDay().ToString(format);
+
+        var endDate = request.EndDate is not null
+            ? request.EndDate.Value.ToString(format)
+            : DateTime.Now.GetLastDay().ToString(format);
+
+        var url = $"v1/transactions?startDate={startDate}&endDate={endDate}";
+
+        return await _client.GetFromJsonAsync<PagedResponse<List<Transaction>?>>(url)
+            ?? new PagedResponse<List<Transaction>?>(null, 400, "Não foi possível obter as transações");
+
     }
 
    
