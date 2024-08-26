@@ -1,17 +1,14 @@
 ﻿using Dima.Api.Data;
 using Dima.Core.Common.Extensions;
-using Dima.Core.Enum;
 using Dima.Core.Handlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Transactions;
 using Dima.Core.Responses;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dima.Api.Handlers;
 
-public class TransactionHandler(AppDbContext context) : ICategoryHandler
+public class TransactionHandler(AppDbContext context) : ITransactionHandler
 {
     public async Task<Response<Transaction?>> CreateAsync(CreateTransactionRequest request)
     {
@@ -109,7 +106,7 @@ public class TransactionHandler(AppDbContext context) : ICategoryHandler
             return new Response<Transaction?>(null, 500, "Erro ao procurar movimentação.");
         }
     }
-    public async Task<PagedResponse<List<Transaction>>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
+    public async Task<PagedResponse<List<Transaction>?>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
     {
         try
         {
@@ -133,11 +130,11 @@ public class TransactionHandler(AppDbContext context) : ICategoryHandler
             var count = await query
                               .CountAsync();
 
-            return new PagedResponse<List<Transaction>>(transactions, count, request.PageNumber, request.PageSize);
+            return new PagedResponse<List<Transaction>?>(transactions, count, request.PageNumber, request.PageSize);
         }
         catch
         {
-            return new PagedResponse<List<Transaction>>(null, 500, "Não foi possível buscar as movimentações");
+            return new PagedResponse<List<Transaction>?>(null, 500, "Não foi possível buscar as movimentações");
         }
     }
 }
