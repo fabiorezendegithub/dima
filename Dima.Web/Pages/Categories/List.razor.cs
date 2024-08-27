@@ -75,14 +75,24 @@ public partial class ListCategoriesPage : ComponentBase
             noText: "CANCELAR");
 
         if (result is true)
-            await OnDeleteAsync(id);
+            await OnDeleteAsync(id, title);
 
         StateHasChanged();
     }
 
-    public async Task OnDeleteAsync(long id)
+    public async Task OnDeleteAsync(long id, string title)
     {
-
+        try
+        {
+            var request = new DeleteCategoryRequest { Id = id };
+            await Handler.DeleteAsync(request);
+            Categories.RemoveAll(x => x.Id == id);
+            Snackbar.Add($"Categoria {title} excluída com sucesso.", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
     }
     #endregion
 }

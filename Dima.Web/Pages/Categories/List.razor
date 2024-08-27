@@ -42,7 +42,7 @@
                     <MudIconButton 
                         Icon="@Icons.Material.Filled.Delete" 
                         aria-label="Editar"
-                        OnClick="() => {}"
+                        OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id,context.Item.Title)"
                         Color="Color.Error"></MudIconButton>
                 </MudStack>
             </CellTemplate>
