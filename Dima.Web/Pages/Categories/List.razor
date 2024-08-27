@@ -31,5 +31,22 @@
     <Columns>
         <PropertyColumn Property="x => x.Id" Title="#"/>
         <PropertyColumn Property="x => x.Title" Title="Categoria"/> 
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudIconButton 
+                        Icon="@Icons.Material.Filled.Edit"
+                        aria-label="Editar"
+                        Href="@($"/categorias/editar/{context.Item.Id}")"
+                        Color="Color.Primary"></MudIconButton>
+                    <MudIconButton 
+                        Icon="@Icons.Material.Filled.Delete" 
+                        aria-label="Editar"
+                        OnClick="() => {}"
+                        Color="Color.Error"></MudIconButton>
+                </MudStack>
+            </CellTemplate>
+
+        </TemplateColumn>
     </Columns>
 </MudDataGrid>
