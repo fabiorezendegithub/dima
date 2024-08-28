@@ -22,33 +22,50 @@ public partial class EditCategoryPage : ComponentBase
     public ICategoryHandler Handler { get; set; } = null!;
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
+    [Inject]
+    public ISnackbar Snackbar { get; set; } = null!;
     #endregion
 
 
     #region overrides
     protected override async Task OnInitializedAsync()
-    {        
+    {
+        GetCategoryByIdRequest? request = null;
         try
         {
-            var request = new GetCategoryByIdRequest
+            request = new GetCategoryByIdRequest
             {
                 Id = long.Parse(Id)
-            };  
+            };
+        }
+        catch 
+        { 
+            Snackbar.Add("Parâmetro inválido", Severity.Error);        
+        }
 
+        if (request is null)
+            return;
+
+        IsBusy = true;
+        try
+        {
             var response = await Handler.GetByIdAsync(request);
 
-            if (response is { IsSuccess: true, Data:  not null })
+            if (response is { IsSuccess: true, Data: not null })
                 InputModel = new UpdateCategoryRequest
                 {
                     Id = response.Data.Id,
                     Title = response.Data.Title,
                     Description = response.Data.Description
                 };
-
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
     #endregion
@@ -61,7 +78,7 @@ public partial class EditCategoryPage : ComponentBase
 
         try
         {
-            var result = await Handler.CreateAsync(InputModel);
+            var result = await Handler.UpdateAsync(InputModel);
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
@@ -83,3 +100,4 @@ public partial class EditCategoryPage : ComponentBase
     }
     #endregion
 }
+ 
