@@ -10,6 +10,5 @@ public class UpdateCategoryRequest : Request
     [MaxLength(80, ErrorMessage = "O tamanho máximo do título é de 80 caracteres")]
     public string Title { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Descrição Inválida")]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 }
