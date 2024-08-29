@@ -8,16 +8,31 @@
 
        <MudTextField Label="Título"
                      HelperText="Campo obrigatório"
-                     @bind-Value=InputModel.Title
+                     @bind-Value="InputModel.Title"
                      For="@(() => InputModel.Title)" />
 
         <MudTextField Label="Quanto?"
                       T="decimal"
-                      Variant="Variant.Text"
                       Format="C"
+                      Variant="Variant.Text"
                       HelperText="Informe o valor que será pago ou recebido"
-                      @bind-Value=InputModel.Amount
+                      @bind-Value="InputModel.Amount"
                       For="@(() => InputModel.Amount)" />
+
+        <MudDatePicker Label="Quando?"
+                       @bind-Date="@InputModel.PaidOrReceivedAt"
+                       HelperText="Selecione a data que o valor será pago ou recebido."/>
+
+        <MudSelect T="ETransactionType"
+                   AnchorOrigin="Origin.BottomCenter"
+                   @bind-Value="InputModel.Type">
+            <MudSelectItem T="ETransactionType" Value="ETransactionType.Deposit">
+                Entrada
+            </MudSelectItem>
+            <MudSelectItem T="ETransactionType" Value="ETransactionType.WithDraw">
+                Saida
+            </MudSelectItem>
+        </MudSelect>
    </EditForm>
 
 </MudPaper>
