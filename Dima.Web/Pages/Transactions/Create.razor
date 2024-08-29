@@ -33,6 +33,22 @@
                 Saida
             </MudSelectItem>
         </MudSelect>
+
+        <MudSelect 
+            T="long"
+            Label="Categoria"
+            @bind-Value="InputModel.CategoryId"
+            AnchorOrigin="Origin.BottomCenter">
+            @foreach (var category in Categories)
+            {
+                <MudSelectItem
+                    T="long"
+                    Value="category.Id">
+                    @category.Title
+                </MudSelectItem>
+            }
+
+        </MudSelect>
    </EditForm>
 
 </MudPaper>
