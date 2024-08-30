@@ -40,7 +40,6 @@ public partial class CreateTransactionPage : ComponentBase
             {
                 Categories = result.Data ?? [];
                 InputModel.CategoryId = Categories.FirstOrDefault()?.Id ?? 0;
-
             }
         }
         catch (Exception ex)
