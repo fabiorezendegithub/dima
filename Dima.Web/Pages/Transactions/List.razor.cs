@@ -36,12 +36,12 @@ public partial class ListTransactionsPage : ComponentBase
 
     #region overrides
     protected override async Task OnInitializedAsync()
-        => await GetTransactions();
+        => await GetTransactionsAsync();
     
     #endregion
 
     #region Private Methods
-    private async Task GetTransactions()
+    private async Task GetTransactionsAsync()
     {
         IsBusy = true;
 
@@ -72,6 +72,12 @@ public partial class ListTransactionsPage : ComponentBase
     #endregion
 
     #region Public Methods
+
+    public async Task OnSearchAsync()
+    {
+        await GetTransactionsAsync();
+        StateHasChanged();
+    }
 
     public async void OnDeleteButtonClickedAsync(long id, string title)
     {
