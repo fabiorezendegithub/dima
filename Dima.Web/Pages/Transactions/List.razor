@@ -5,9 +5,48 @@
 
 <MudDataGrid 
     Items="@Transactions" 
-    Filterable="true"
+    Filterable="false"
     QuickFilter="Filter"
     Hideable="true"
     ColumResizeMode="ResizeMode.Column">
-    
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Lançamentos</MudText>
+        <MudSpacer />
+        <MudTextField 
+            @bind-Value="SearchTerm"
+            Placeholder="Filtrar..."
+            Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            Immediate="true"
+            IconSize="Size.Medium"
+            Class="mt-0"/>
+        <Columns>
+            <PropertyColumn Property="x => x.Title" Title="Lançamento" />
+            <TemplateColumn Title="Tipo" Filterable="true">
+                <CellTemplate>
+                    @if(context.Item.Type == ETransactionType.Deposit)
+                    {
+                        <MudChip Color="Color.Success" Size="Size.Small" Variant="Variant.Filled">
+                            Entrada
+                        </MudChip>
+                    }
+                    else
+                    {
+                        <MudChip Color="Color.Error" Size="Size.Small" Variant="Variant.Filled">
+                            Saída
+                        </MudChip>
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+            <PropertyColumn 
+                Property="x => x.Amount" 
+                Format="C" 
+                Title="Lancamento" 
+                Sortable="true">
+                <FooterTemplate>
+                    @context.Items.Sum(x => x.Amount).ToString("C")
+                </FooterTemplate>
+            </PropertyColumn>
+        </Columns>
+    </ToolBarContent>
 </MudDataGrid>

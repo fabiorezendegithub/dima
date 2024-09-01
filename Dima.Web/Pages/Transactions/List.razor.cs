@@ -42,7 +42,7 @@ public partial class ListTransactionsPage : ComponentBase
     #endregion
 
     #region Private Methods
-    public async Task GetTransactions()
+    private async Task GetTransactions()
     {
         IsBusy = true;
 
@@ -83,34 +83,7 @@ public partial class ListTransactionsPage : ComponentBase
             || transaction.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
     };
 
-
-    public async void OnDeleteButtonClickedAsync(long id, string title)
-    {
-        var result = await DialogService.ShowMessageBox(
-            "ATENÇÃO",
-            $"Ao prosseguir a categoria {title} será excluída. Essa é uma ação irreversível! Deseja continuar?",
-            yesText: "EXCLUIR",
-            noText: "CANCELAR");
-
-        if (result is true)
-            await OnDeleteAsync(id, title);
-
-        StateHasChanged();
-    }
-
-    public async Task OnDeleteAsync(long id, string title)
-    {
-        try
-        {
-            var request = new DeleteCategoryRequest { Id = id };
-            await Handler.DeleteAsync(request);
-            Categories.RemoveAll(x => x.Id == id);
-            Snackbar.Add($"Categoria {title} excluída com sucesso.", Severity.Success);
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add(ex.Message, Severity.Error);
-        }
-    }
+   
+   
     #endregion
 }
