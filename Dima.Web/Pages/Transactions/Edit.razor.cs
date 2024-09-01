@@ -111,6 +111,7 @@ public partial class EditTransactionPage : ComponentBase
         try
         {
             var result = await TransactionHandler.UpdateAsync(InputModel);
+
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
