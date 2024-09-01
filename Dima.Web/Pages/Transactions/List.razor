@@ -3,6 +3,43 @@
 
 <MudText Typo="Typo.h3">Lancamentos</MudText>
 
+<div class="d-flex justify-end mt-4 mb-4">
+    <MudSelect 
+        T="int"
+        Label="Mês"
+        @bind-Value="CurrentMonth"
+        AnchorOrigin="Origin.BottomCenter"
+        Class="mr-4">
+        @for(var month = 1; month <= 12; month++)
+        {
+            var date = new DateTime(DateTime.Now.Year, month, 1);
+            <MudSelectItem T="int" Value="@month">
+                @(date.ToString("MMMM"))
+            </MudSelectItem>
+        }
+    </MudSelect>
+    <MudSelect T="int"
+               Label="Ano"
+               @bind-Value="CurrentYear"
+               AnchorOrigin="Origin.BottomCenter">
+        @foreach(var year in Years)
+        {
+            <MudSelectItem T="int" Value="@year">
+                @year
+            </MudSelectItem>
+        }
+    </MudSelect>
+    <MudSpacer />
+    <MudButton 
+        Variant="Variant.Filled"
+        Size="Size.Small"
+        Color="Color.Primary"
+        StartIcon="@Icons.Material.Filled.Search"
+        OnClick="() => {}">
+        Pesquisar
+    </MudButton>
+</div>
+
 <MudDataGrid 
     Items="@Transactions" 
     Filterable="false"

@@ -27,7 +27,8 @@ public class TransactionHandler(IHttpClientFactory httpClientFactory) : ITransac
 
     public async Task<Response<Transaction?>> DeleteAsync(DeleteTransactionRequest request)
     {
-        var result = await _client.DeleteAsync($"v1/categories/{request.Id}");
+        var result = await _client.DeleteAsync($"v1/transactions/{request.Id}");
+
         return await result.Content.ReadFromJsonAsync<Response<Transaction?>>()
             ?? new Response<Transaction?>(null, 400, "Falha ao excluir a transação");
     }

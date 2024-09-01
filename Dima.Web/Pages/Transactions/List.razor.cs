@@ -1,7 +1,6 @@
 ﻿using Dima.Core.Common.Extensions;
 using Dima.Core.Handlers;
 using Dima.Core.Models;
-using Dima.Core.Requests.Categories;
 using Dima.Core.Requests.Transactions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -16,7 +15,7 @@ public partial class ListTransactionsPage : ComponentBase
     public string SearchTerm { get; set; } = string.Empty;
     public int CurrentYear { get; set; } = DateTime.Now.Year;
     public int CurrentMonth { get; set; } = DateTime.Now.Month;
-    public int[] Year { get; set; } =
+    public int[] Years { get; set; } =
     {
         DateTime.Now.Year,
         DateTime.Now.AddYears(-1).Year,
@@ -60,7 +59,6 @@ public partial class ListTransactionsPage : ComponentBase
 
             if (result.IsSuccess)
                 Transactions = result.Data ?? [];
-
         }
         catch (Exception ex)
         {
@@ -94,9 +92,16 @@ public partial class ListTransactionsPage : ComponentBase
         try
         {
             var request = new DeleteTransactionRequest { Id = id };
-            await Handler.DeleteAsync(request);
-            Transactions.RemoveAll(x => x.Id == id);
-            Snackbar.Add($"Lançamento {title} excluído com sucesso.", Severity.Success);
+            var result = await Handler.DeleteAsync(request);
+            if(result.IsSuccess)
+            {
+                Transactions.RemoveAll(x => x.Id == id);
+                Snackbar.Add($"Lançamento {title} excluído com sucesso.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add(result.Message, Severity.Error);
+            }
         }
         catch (Exception ex)
         {
