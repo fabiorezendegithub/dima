@@ -64,7 +64,7 @@ public partial class CreateTransactionPage : ComponentBase
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
-                NavigationManager.NavigateTo("/transactions");
+                NavigationManager.NavigateTo("/lancamentos/historico");
             }
             else
             {

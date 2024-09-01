@@ -74,13 +74,42 @@ public partial class ListTransactionsPage : ComponentBase
     #endregion
 
     #region Public Methods
+
+    public async void OnDeleteButtonClickedAsync(long id, string title)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "ATENÇÃO",
+            $"Ao prosseguir o lançamento {title} será excluído. Essa é uma ação irreversível! Deseja continuar?",
+            yesText: "EXCLUIR",
+            noText: "CANCELAR");
+
+        if (result is true)
+            await OnDeleteAsync(id, title);
+
+        StateHasChanged();
+    }
+
+    public async Task OnDeleteAsync(long id, string title)
+    {
+        try
+        {
+            var request = new DeleteTransactionRequest { Id = id };
+            await Handler.DeleteAsync(request);
+            Transactions.RemoveAll(x => x.Id == id);
+            Snackbar.Add($"Lançamento {title} excluído com sucesso.", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
     public Func<Transaction, bool> Filter => transaction =>
     {
         if (string.IsNullOrEmpty(SearchTerm))
             return true;
 
         return transaction.Id.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
-            || transaction.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+            || transaction.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
     };
 
    

@@ -8,7 +8,7 @@
     Filterable="false"
     QuickFilter="Filter"
     Hideable="true"
-    ColumResizeMode="ResizeMode.Column">
+    ColumnResizeMode="ResizeMode.Column">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Lançamentos</MudText>
         <MudSpacer />
@@ -20,6 +20,7 @@
             Immediate="true"
             IconSize="Size.Medium"
             Class="mt-0"/>
+    </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x.Title" Title="Lançamento" />
             <TemplateColumn Title="Tipo" Filterable="true">
@@ -47,6 +48,20 @@
                     @context.Items.Sum(x => x.Amount).ToString("C")
                 </FooterTemplate>
             </PropertyColumn>
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                   aria-label="Editar"
+                                   Href="@($"/lancamentos/editar/{context.Item.Id}")"
+                                   Color="Color.Primary"></MudIconButton>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                   aria-label="Deletar"
+                                   OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id,context.Item.Title)"
+                                   Color="Color.Error"></MudIconButton>
+                </MudStack>
+            </CellTemplate>
+
+        </TemplateColumn>
         </Columns>
-    </ToolBarContent>
 </MudDataGrid>
