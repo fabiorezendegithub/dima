@@ -15,10 +15,13 @@ namespace Dima.Api.Endpoints.Reports
 
         private static async Task<IResult> HandleAsync(
             ClaimsPrincipal user,
-            IReportHandler handler,
-            GetFinancialSummaryRequest request)
+            IReportHandler handler)
         {
-            request.UserId = user.Identity?.Name ?? string.Empty;
+            var request = new GetFinancialSummaryRequest
+            {
+                UserId = user.Identity?.Name ?? string.Empty
+            };
+
             var result = await handler.GetFinancialSummaryReportAsync(request);
 
             return result.IsSuccess

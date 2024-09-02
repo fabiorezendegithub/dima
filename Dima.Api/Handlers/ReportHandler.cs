@@ -40,7 +40,7 @@ public class ReportHandler(AppDbContext context) : IReportHandler
             var data = await context
                               .Transactions
                               .AsNoTracking()
-                              .Where(x => x.UserId != request.UserId
+                              .Where(x => x.UserId == request.UserId
                                        && x.PaidOrReceivedAt >= startDate
                                        && x.PaidOrReceivedAt <= DateTime.Now)
                               .GroupBy(x => 1)
