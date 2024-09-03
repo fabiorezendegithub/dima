@@ -39,7 +39,7 @@ public partial class IncomesByCategoryChartComponent : ComponentBase
         foreach (var item in result.Data)
         {
             Labels.Add($"{item.Category} ({item.Incomes:C})");
-            Data.Add(-(double)item.Incomes);
+            Data.Add((double)item.Incomes);
         }
 
     }
