@@ -23,6 +23,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<IncomesAndExpenses> IncomesAndExpenses { get; set; } = null!;
     public DbSet<IncomesByCategory> IncomesByCategories { get; set; } = null!;
     public DbSet<ExpensesByCategory> ExpensesByCategories { get; set; } = null!;
+    public DbSet<Voucher> Vouchers { get; set; } = null!;
+    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
