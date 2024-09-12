@@ -6,5 +6,5 @@ namespace Dima.Core.Handlers;
 
 public interface IVoucherHandler
 {
-    Task<Response<Voucher>?> GetByNumberAsync(GetVoucherBynumberRequest request);
+    Task<Response<Voucher?>> GetByNumberAsync(GetVoucherBynumberRequest request);
 }
