@@ -4,7 +4,9 @@ using Dima.Core.Handlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Orders;
 using Dima.Core.Responses;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 
 namespace Dima.Api.Handlers;
 
@@ -63,7 +65,72 @@ public class OrderHandler(AppDbContext context) : IOrderHandler
 
     public async Task<Response<Order?>> CreateAsync(CreateOrderRequest request)
     {
-        throw new NotImplementedException();
+        Product? product;
+        try
+        {
+            product = await context
+                .Products
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => 
+                    x.Id == request.ProductId && 
+                    x.IsActive);
+
+            if(product is null)
+                return new Response<Order?>(null, 400, "Produto não encontrado");
+
+            context.Attach(product);
+        }
+        catch
+        {
+            return new Response<Order?>(null, 500, "Não foi possível obter o produto");
+        }
+
+        Voucher? voucher = null;
+        try
+        {
+            if(request.VoucherId is not null)
+            {
+                voucher = await context
+                .Vouchers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.VoucherId);
+
+                if (voucher is null)
+                    return new Response<Order?>(null, 400, "Voucher inválido ou não encontrado");
+
+                if (voucher.IsActive == false)
+                    return new Response<Order?>(null, 400, "Este voucher já foi utilizado.");
+
+                voucher.IsActive = false;
+                context.Vouchers.Update(voucher);
+            }            
+        }
+        catch
+        {
+            return new Response<Order?>(null, 500, "Falha ao obter o voucher informado");
+        }
+
+        var order = new Order
+        {
+            UserId = request.UserId,
+            Product = product,
+            ProductId = request.ProductId,
+            Voucher = voucher,
+            VoucherId = request.VoucherId
+        };
+
+        try
+        {
+            await context.Orders.AddAsync(order);
+            await context.SaveChangesAsync();           
+        }
+        catch
+        {
+            return new Response<Order?>(null, 500, "Não foi possível realizar o pedido.");
+        }
+
+        return new Response<Order?>(order, 201, $"Pedido {order.Number} cadastrado com sucesso.");
     }
 
     public async Task<PagedResponse<List<Order>?>> GetAllAsync(GetAllOrdersRequest request)
