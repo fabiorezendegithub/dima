@@ -196,6 +196,51 @@ public class OrderHandler(AppDbContext context) : IOrderHandler
 
     public async Task<Response<Order?>> RefundAsync(RefundOrderRequest request)
     {
-        throw new NotImplementedException();
+        Order? order = null;
+
+        try
+        {
+            order = await context
+                .Orders
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.Id &&
+                    x.UserId == request.UserId);
+
+            if (order is null)
+                return new Response<Order?>(null, 404, "Pedido não foi encontrado");
+        }
+        catch
+        {
+            return new Response<Order?>(null, 500, "Falha ao consultar o  pedido");
+        }
+
+        switch (order.Status)
+        {
+            case EOrderStatus.Canceled:
+                return new Response<Order?>(order, 400, "Este pedido já foi cancelado e não pode ser reembolsado!");
+            case EOrderStatus.Paid:
+                break;
+            case EOrderStatus.Refunded:
+                return new Response<Order?>(order, 400, "Este pedido já foi reembolsado!");
+            case EOrderStatus.WaitingPayment:
+                return new Response<Order?>(order, 400, "Este pedido ainda não foi pago e não pode ser reembolsado!");
+            default:
+                return new Response<Order?>(order, 400, "Não foi possível reembolsar o pedido");
+        }
+
+        order.Status = EOrderStatus.Refunded;
+        order.UpdatedAt = DateTime.Now;
+
+        try
+        {
+            context.Orders.Update(order);
+            await context.SaveChangesAsync();
+        }
+        catch
+        {
+            return new Response<Order?>(order, 500, "Falha ao tentar reembolsar o pagamento.");
+        }
+
+        return new Response<Order?>(order, 200, $"Pedido {order.Number} reembolsado com sucesso.");
     }
 }
