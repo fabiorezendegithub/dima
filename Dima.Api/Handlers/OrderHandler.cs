@@ -162,7 +162,25 @@ public class OrderHandler(AppDbContext context) : IOrderHandler
 
     public async Task<Response<Order?>> GetByNumberAsync(GetOrderByNumberRequest request)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var order = await context
+                .Orders
+                .AsNoTracking()
+                .Include(x => x.Product)
+                .Include(x => x.Voucher)
+                .FirstOrDefaultAsync(x => 
+                    x.Number == request.Number && 
+                    x.UserId == request.UserId);
+
+            return order is null
+                ? new Response<Order?>(null, 404, "Pedido não encontrado")
+                : new Response<Order?>(order);
+        }
+        catch
+        {
+            return new Response<Order?>(null, 500, "Não foi possível encontrar o pedido");
+        }
     }
 
     public async Task<Response<Order?>> PayAsync(PayOrderRequest request)
