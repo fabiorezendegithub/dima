@@ -14,7 +14,7 @@ public class CancelOrderEndpoint : IEndpoint
                       .WithName("Orders: Cancel order")
                       .WithSummary("Cancelar um Pedido")
                       .WithDescription("Cancelar um Pedido")
-                      .WithOrder(2)
+                      .WithOrder(4)
                       .Produces<Response<Order?>>();
 
     private static async Task<IResult> HandleAsync(

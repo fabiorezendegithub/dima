@@ -14,7 +14,7 @@ public class CreateOrderEndpoint : IEndpoint
                           .WithName("Orders: Create a new order")
                           .WithSummary("Cria um novo Pedido")
                           .WithDescription("Cria um novo Pedido")
-                          .WithOrder(1)
+                          .WithOrder(3)
                           .Produces<Response<Order?>>();
 
     private static async Task<IResult> HandleAsync(

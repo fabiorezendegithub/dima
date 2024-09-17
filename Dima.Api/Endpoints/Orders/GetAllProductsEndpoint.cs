@@ -16,7 +16,7 @@ public class GetAllProductsEndpoint : IEndpoint
                   .WithName("Products: Get All")
                   .WithSummary("Busca todos os produtos")
                   .WithDescription("Busca todos os produtos")
-                  .WithOrder(4)
+                  .WithOrder(1)
                   .Produces<PagedResponse<List<Product>?>>();
 
     private static async Task<IResult> HandleAsync(
