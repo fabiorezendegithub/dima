@@ -44,12 +44,12 @@ public partial class RegisterPage : ComponentBase
 
             if(result.IsSuccess)
             {
-                Snackbar.Add(result.Message, Severity.Success);
+                Snackbar.Add(result.Message ?? "Usuário registrado com sucesso", Severity.Success);
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "Erro ao registrar o usuário", Severity.Error);
             }
         }
         catch (Exception ex)

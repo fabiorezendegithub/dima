@@ -106,7 +106,7 @@ public partial class ListTransactionsPage : ComponentBase
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? $"Erro ao tentar excluir o lançamento {title}", Severity.Error);
             }
         }
         catch (Exception ex)

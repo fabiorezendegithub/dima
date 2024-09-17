@@ -81,12 +81,12 @@ public partial class EditCategoryPage : ComponentBase
             var result = await Handler.UpdateAsync(InputModel);
             if (result.IsSuccess)
             {
-                Snackbar.Add(result.Message, Severity.Success);
+                Snackbar.Add(result.Message ?? "Categoria alterada com sucesso", Severity.Success);
                 NavigationManager.NavigateTo("/categorias");
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "Erro ao alterar a categoria", Severity.Error);
             }
         }
         catch (Exception ex)

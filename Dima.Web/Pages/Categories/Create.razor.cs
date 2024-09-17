@@ -31,12 +31,12 @@ public partial class CreateCategoryPage : ComponentBase
             var result = await Handler.CreateAsync(InputModel);
             if (result.IsSuccess)
             {
-                Snackbar.Add(result.Message, Severity.Success);
+                Snackbar.Add(result.Message ?? "Categoria criada com sucesso", Severity.Success);
                 NavigationManager.NavigateTo("/categorias");
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "Erro ao criar categoria", Severity.Error);
             }
         }
         catch (Exception ex)

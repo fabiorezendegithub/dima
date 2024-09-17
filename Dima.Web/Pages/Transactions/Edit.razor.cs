@@ -114,12 +114,12 @@ public partial class EditTransactionPage : ComponentBase
 
             if (result.IsSuccess)
             {
-                Snackbar.Add(result.Message, Severity.Success);
+                Snackbar.Add(result.Message ?? "Lançamento alterado com sucesso", Severity.Success);
                 NavigationManager.NavigateTo("/lancamentos/historico");
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "Erro ao alterar o lançamento", Severity.Error);
             }
         }
         catch (Exception ex)

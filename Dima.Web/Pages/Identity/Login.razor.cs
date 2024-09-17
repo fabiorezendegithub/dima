@@ -44,14 +44,14 @@ public partial class LoginPage : ComponentBase
 
             if (result.IsSuccess)
             {
-                Snackbar.Add(result.Message, Severity.Success);
+                Snackbar.Add(result.Message ?? "Login efetuado com sucesso", Severity.Success);
                 await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 AuthenticationStateProvider.NotifyAuthenticationStateChanged();
                 NavigationManager.NavigateTo("/");
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "Erro ao efetuar o login", Severity.Error);
             }
         }
         catch (Exception ex)

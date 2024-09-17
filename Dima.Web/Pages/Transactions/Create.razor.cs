@@ -63,12 +63,12 @@ public partial class CreateTransactionPage : ComponentBase
             var result = await TransactionHandler.CreateAsync(InputModel);
             if (result.IsSuccess)
             {
-                Snackbar.Add(result.Message, Severity.Success);
+                Snackbar.Add(result.Message ?? "Lançamento criado com sucesso", Severity.Success);
                 NavigationManager.NavigateTo("/lancamentos/historico");
             }
             else
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "Houve um erro ao incluir o lançamento", Severity.Error);
             }
         }
         catch (Exception ex)
