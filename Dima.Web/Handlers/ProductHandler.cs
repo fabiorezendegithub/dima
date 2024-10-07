@@ -2,18 +2,19 @@
 using Dima.Core.Models;
 using Dima.Core.Requests.Orders;
 using Dima.Core.Responses;
+using System.Net.Http.Json;
 
 namespace Dima.Web.Handlers;
 
-public class ProductHandler : IProductHandler
+public class ProductHandler(IHttpClientFactory httpClientFactory) : IProductHandler
 {
-    public Task<PagedResponse<List<Product>?>> GetAllAsync(GetAllProductsRequest request)
-    {
-        throw new NotImplementedException();
-    }
+    private readonly HttpClient _client = httpClientFactory.CreateClient(Configuration.HttpClientName);
 
-    public Task<Response<Product?>> GetBySlugAsync(GetProductBySlugRequest request)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<PagedResponse<List<Product>?>> GetAllAsync(GetAllProductsRequest request)
+        => await _client.GetFromJsonAsync<PagedResponse<List<Product>?>>("v1/products")
+            ?? new PagedResponse<List<Product>?>(null, 400, "Não foi possível obter os produtos");
+
+    public async Task<Response<Product?>> GetBySlugAsync(GetProductBySlugRequest request)
+        => await _client.GetFromJsonAsync<Response<Product?>>($"v1/categories/{request.Slug}")
+            ?? new Response<Product?>(null, 400, "Não foi possível obter o produto");
 }
