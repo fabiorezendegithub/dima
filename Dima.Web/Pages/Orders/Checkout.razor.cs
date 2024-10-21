@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Dima.Core.Handlers;
+using Dima.Core.Models;
+using Dima.Core.Requests.Orders;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Dima.Web.Pages.Orders;
 
@@ -12,17 +16,26 @@ public partial class CheckoutPage : ComponentBase
 
     #endregion
     #region Properties
-    //public bool IsBusy { get; set; } = false;
-    //public CreateCategoryRequest InputModel { get; set; } = new();
-    //#endregion
+    public bool IsBusy { get; set; } = false;
+    public bool IsValid { get; set; } = false;
+    public CreateOrderRequest InputModel { get; set; } = new();
+    public Product? Product { get; set; }
+    public Voucher? Voucher { get; set; }
+    public decimal Total { get; set; }
+    #endregion
 
-    //#region Services
-    //[Inject]
-    //public ICategoryHandler Handler { get; set; } = null!;
-    //[Inject]
-    //public NavigationManager NavigationManager { get; set; } = null!;
-    //[Inject]
-    //public ISnackbar Snackbar { get; set; } = null!;
+    #region Services
+    [Inject]
+    public IProductHandler ProductHandler { get; set; } = null!;
+    [Inject]
+    public IOrderHandler OrderHandler { get; set; } = null!;
+    [Inject]
+    public IVoucherHandler VoucherHandler { get; set; } = null!;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
+    [Inject]
+    public ISnackbar Snackbar { get; set; } = null!;
     #endregion
 
     #region Methods
