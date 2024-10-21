@@ -1,5 +1,6 @@
 ﻿using Dima.Core.Handlers;
 using Dima.Core.Models;
+using Dima.Core.Requests.Categories;
 using Dima.Core.Requests.Orders;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -36,6 +37,73 @@ public partial class CheckoutPage : ComponentBase
     public NavigationManager NavigationManager { get; set; } = null!;
     [Inject]
     public ISnackbar Snackbar { get; set; } = null!;
+    #endregion
+
+    #region overrides
+    protected override async Task OnInitializedAsync()
+    {                      
+        try
+        {
+            var result = await ProductHandler.GetBySlugAsync(new GetProductBySlugRequest 
+            {  
+                Slug = ProductSlug 
+            });
+
+            if (result.IsSuccess == false)
+            {
+                Snackbar.Add("Não foi possível obter o produto", Severity.Error);
+                IsValid = false;
+                return;
+            }
+
+            Product = result.Data;
+        }
+        catch
+        {
+            Snackbar.Add("Não foi possível obter o produto", Severity.Error);
+            IsValid = false;
+        }
+
+        if (Product is null)
+        {
+            Snackbar.Add("Não foi possível obter o produto", Severity.Error);
+            IsValid = false;
+            return;
+        }
+
+        if(string.IsNullOrEmpty(VoucherNumber) == false)
+        {
+            try
+            {
+                var result = await VoucherHandler.GetByNumberAsync(new GetVoucherBynumberRequest
+                {
+                    Number = VoucherNumber.Replace("-", "")
+                });
+
+                if (result.IsSuccess is false)
+                {
+                    VoucherNumber = string.Empty;
+                    Snackbar.Add("Não foi possível obter o voucher");
+                }
+
+                if (result.Data is null)
+                {
+                    VoucherNumber = string.Empty;
+                    Snackbar.Add("Não foi possível obter o voucher");
+                }
+
+                Voucher = result.Data;
+            }
+            catch
+            {
+                VoucherNumber = string.Empty;
+                Snackbar.Add("Não foi possível obter o voucher");
+            }
+        }
+
+        IsValid = true;
+        Total = Product.Price - (Voucher?.Amount ?? 0);
+    }
     #endregion
 
     #region Methods
