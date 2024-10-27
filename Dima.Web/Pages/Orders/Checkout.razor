@@ -15,7 +15,28 @@
                         </MudText>
                     </MudListItem>
                     <MudDivider />
-                    VOUCHER
+                    <MudList T="string">
+                        <MudListItem 
+                            Icon="@(Voucher is null ? Icons.Material.Filled.Discount : Icons.Material.Filled.CheckCircle)"
+                        >
+                            <MudTextField T="string"
+                                      Disabled="@(Voucher is not null)"
+                                      Placeholder="Cupom de Desconto"
+                                      @bind-Value="@VoucherNumber"
+                                      Mask="Mask"
+                                      Adornment="Adornment.End"
+                                      AdornmentIcon="@Icons.Material.Filled.FactCheck"
+                                      OnAdornmentClick="@(() => {})"/>
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.MoneyOff">
+                            <div class="d-flex">
+                                <MudText>Desconto</MudText>
+                                <MudText Class="ml-auto">
+                                    @(Voucher?.Amount.ToString("C"))
+                                </MudText>
+                            </div>
+                        </MudListItem>
+                    </MudList> 
                     <MudDivider />
                     <div class="mt-auto">
                         <MudText>Total: </MudText>
@@ -28,16 +49,16 @@
                 </MudList>
             </MudPaper>
 
-            <MudButton 
+             <MudButton 
                 Variant="Variant.Filled" 
                 Color="Color.Primary" 
                 Disabled="@(!IsValid)"
-                DisableElevation="true" 
+                DropShadow="true"
                 Size="Size.Large" 
                 Class="mt-6" 
                 FullWidth="true">
                 FINALIZAR PEDIDO
             </MudButton>
         </MudItem>
-    </MudGrid>
+    </MudGrid> 
 </MudContainer>
