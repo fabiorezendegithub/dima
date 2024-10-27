@@ -14,6 +14,13 @@ public partial class CheckoutPage : ComponentBase
     public string ProductSlug { get; set; } = string.Empty;
     [SupplyParameterFromQuery(Name ="voucher")]
     public string? VoucherNumber { get; set; }
+    public PatternMask Mask = new("####-####")
+    {
+        MaskChars = [new MaskChar('#', @"[0-9a-fA-F]")],
+        Placeholder = '_',
+        CleanDelimiters = true,
+        Transformation = AllUpperCase
+    };
 
     #endregion
     #region Properties
@@ -107,6 +114,8 @@ public partial class CheckoutPage : ComponentBase
     #endregion
 
     #region Methods
+    private static char AllUpperCase(char c)
+        => c.ToString().ToUpperInvariant()[0];
     //public async Task OnValidSubmitAsync()
     //{
     //    IsBusy = true;
