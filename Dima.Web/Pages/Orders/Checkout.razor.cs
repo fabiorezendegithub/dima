@@ -23,6 +23,7 @@ public partial class CheckoutPage : ComponentBase
     };
 
     #endregion
+    
     #region Properties
     public bool IsBusy { get; set; } = false;
     public bool IsValid { get; set; } = false;
@@ -116,31 +117,34 @@ public partial class CheckoutPage : ComponentBase
     #region Methods
     private static char AllUpperCase(char c)
         => c.ToString().ToUpperInvariant()[0];
-    //public async Task OnValidSubmitAsync()
-    //{
-    //    IsBusy = true;
 
-    //    try
-    //    {
-    //        var result = await Handler.CreateAsync(InputModel);
-    //        if (result.IsSuccess)
-    //        {
-    //            Snackbar.Add(result.Message ?? "Categoria criada com sucesso", Severity.Success);
-    //            NavigationManager.NavigateTo("/categorias");
-    //        }
-    //        else
-    //        {
-    //            Snackbar.Add(result.Message ?? "Erro ao criar categoria", Severity.Error);
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Snackbar.Add(ex.Message, Severity.Error);
-    //    }
-    //    finally
-    //    {
-    //        IsBusy = false;
-    //    }
-    //}
+    public async Task OnValidSubmitAsync()
+    {
+        IsBusy = true;
+
+        try
+        {
+            var request = new CreateOrderRequest
+            {
+                ProductId = Product!.Id,
+                VoucherId = Voucher?.Id ?? null
+            };
+
+            var result = await OrderHandler.CreateAsync(request);
+            
+            if(result.IsSuccess)
+                NavigationManager.NavigateTo($"/pedidos/{result.Data!.Number}");
+            else
+                Snackbar.Add(result.Message ?? string.Empty, Severity.Error);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
     #endregion
 }
