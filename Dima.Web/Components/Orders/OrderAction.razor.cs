@@ -1,14 +1,15 @@
-using Dima.Core.Enum;
+using Dima.Core.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace Dima.Web.Components.Orders;
 
-public partial class OrderStatusComponent : ComponentBase
+public partial class OrderActionComponent : ComponentBase
 {
     #region Parameters
+    
     [Parameter, EditorRequired]
-    public EOrderStatus Status { get; set; }
+    public Order Order { get; set; } = null!;
 
     #endregion
-    
+
 }
