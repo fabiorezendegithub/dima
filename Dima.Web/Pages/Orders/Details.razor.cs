@@ -4,7 +4,7 @@ using Dima.Core.Requests.Orders;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Dima.Web.Pages;
+namespace Dima.Web.Pages.Orders;
 
 public partial class DetailsPage : ComponentBase
 {
