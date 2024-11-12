@@ -1,6 +1,7 @@
 using Dima.Core.Handlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Orders;
+using Dima.Web.Pages.Orders;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -9,8 +10,11 @@ namespace Dima.Web.Components.Orders;
 public partial class OrderActionComponent : ComponentBase
 {
     #region Parameters
-
-    [Parameter, EditorRequired] public Order Order { get; set; } = null!;
+    [CascadingParameter]
+    public DetailsPage Parent { get; set; } = null!;
+    
+    [Parameter, EditorRequired] 
+    public Order Order { get; set; } = null!;
 
     #endregion
 
@@ -49,7 +53,10 @@ public partial class OrderActionComponent : ComponentBase
         var result = await OrderHandler.CancelAsync(request);
 
         if (result.IsSuccess)
+        {
+            Parent.RefreshState(result.Data!);
             Snackbar.Add(result.Message ?? string.Empty, Severity.Success);
+        }
         else
             Snackbar.Add(result.Message ?? string.Empty, Severity.Error);
     }

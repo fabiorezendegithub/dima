@@ -27,15 +27,17 @@
     <p>@Order.Total.ToString("C")</p>
     <br>
     <h4>Situação</h4>
-    <OrderStatus Status="@Order.Status" />
+    <OrderStatus Status="@Order.Status"/>
     <br>
     <br>
     <br>
-    <OrderAction Order="Order" />
+    <CascadingValue Value="this">
+        <OrderAction Order="Order"/>
+    </CascadingValue>
 }
 else
 {
-    <MudSkeleton Animation="Animation.Wave" />
-    <MudSkeleton Animation="Animation.Wave" />
-    <MudSkeleton Animation="Animation.Wave" />
+    <MudSkeleton Animation="Animation.Wave"/>
+    <MudSkeleton Animation="Animation.Wave"/>
+    <MudSkeleton Animation="Animation.Wave"/>
 }
