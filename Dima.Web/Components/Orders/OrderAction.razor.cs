@@ -28,7 +28,7 @@ public partial class OrderActionComponent : ComponentBase
 
     #region Public Methods
 
-    public async void OnCancelButtonClicked()
+    public async void OnCancelButtonClickedAsync()
     {
         var result = await DialogService.ShowMessageBox(
             "ATENÇÃO",
@@ -37,6 +37,22 @@ public partial class OrderActionComponent : ComponentBase
 
         if (result is not null && result == true)
             await CancelOrderAsync();
+    }
+
+    public async void OnPayButtonClickedAsync()
+    {
+        await PayOrderAsync();
+    }
+    
+    public async void OnRefundButtonClickedAsync()
+    {
+        var result = await DialogService.ShowMessageBox(
+            "ATENÇÃO",
+            "Deseja realmente estornar este pedido?",
+            yesText: "SIM", cancelText: "NÃO");
+
+        if (result is not null && result == true)
+            await RefundOrderAsync();
     }
 
     #endregion
@@ -51,6 +67,30 @@ public partial class OrderActionComponent : ComponentBase
         };
 
         var result = await OrderHandler.CancelAsync(request);
+
+        if (result.IsSuccess)
+        {
+            Parent.RefreshState(result.Data!);
+            Snackbar.Add(result.Message ?? string.Empty, Severity.Success);
+        }
+        else
+            Snackbar.Add(result.Message ?? string.Empty, Severity.Error);
+    }
+
+    private async Task PayOrderAsync()
+    {
+        await Task.Delay(1);
+        Snackbar.Add("Pagamento não implementado", Severity.Error);
+    }
+
+    private async Task RefundOrderAsync()
+    {
+        var request = new RefundOrderRequest()
+        {
+            Id = Order.Id,
+        };
+
+        var result = await OrderHandler.RefundAsync(request);
 
         if (result.IsSuccess)
         {
