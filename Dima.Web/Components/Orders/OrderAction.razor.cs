@@ -96,13 +96,13 @@ public partial class OrderActionComponent : ComponentBase
             var result = await StripeHandler.CreateSessionAsync(request);
             if (result.IsSuccess == false)
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "", Severity.Error);
                 return;
             }
 
             if (result.Data is null)
             {
-                Snackbar.Add(result.Message, Severity.Error);
+                Snackbar.Add(result.Message ?? "", Severity.Error);
                 return;
             }
             
