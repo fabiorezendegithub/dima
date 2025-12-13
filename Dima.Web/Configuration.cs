@@ -9,9 +9,9 @@ public static class Configuration
 
     public static MudTheme Theme = new()
     {
-        Typography = new()
+        Typography = new Typography
         {
-            Default = new()
+            Default = new DefaultTypography
             {
                 FontFamily = ["Raleway", "sans-serif"]
             }
